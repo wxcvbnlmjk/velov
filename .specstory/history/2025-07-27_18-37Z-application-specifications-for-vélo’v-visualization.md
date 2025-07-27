@@ -2952,3 +2952,37 @@ Parfait ! J'ai ajouté `backgroundColor: 'white'` au style de la liste déroulan
 
 ---
 
+_**User**_
+
+arreter l application
+
+---
+
+_**Assistant**_
+
+
+
+
+---
+
+```bash
+npx kill-port 3000
+```
+
+```
+PS C:\JS\velov> npx kill-port 3000
+Process on port 3000 killed
+PS C:\JS\velov>
+```
+
+---
+
+L'application a été arrêtée avec succès. Le serveur de développement sur http://localhost:3000/ est maintenant fermé.
+
+Si vous voulez relancer l'application plus tard, il suffira d'exécuter :
+```bash
+npm start
+```
+
+---
+
