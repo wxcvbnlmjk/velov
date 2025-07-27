@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
