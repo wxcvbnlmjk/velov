@@ -9,6 +9,7 @@ export interface Station {
     availabilities: {
       bikes: number;
       stands: number;
+      electricalInternalBatteryBikes: number;
     };
   };
   status: string;

@@ -5,7 +5,7 @@ import useStations, { Station } from './useStations';
 import StationMarker from './StationMarker';
 import L from 'leaflet';
 
-type DisplayMode = 'bikes' | 'stands';
+type DisplayMode = 'bikes' | 'stands' | 'electricalBikes';
 
 const lyonPosition: [number, number] = [45.75, 4.85]; // Latitude, Longitude de Lyon
 
@@ -26,28 +26,21 @@ const MapView: React.FC = () => {
         borderRadius: '5px', 
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)' 
       }}>
-        <label style={{ marginRight: '10px' }}>
-          <input
-            type="radio"
-            name="displayMode"
-            value="bikes"
-            checked={displayMode === 'bikes'}
-            onChange={(e) => setDisplayMode(e.target.value as DisplayMode)}
-            style={{ marginRight: '5px' }}
-          />
-          Vélos disponibles
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="displayMode"
-            value="stands"
-            checked={displayMode === 'stands'}
-            onChange={(e) => setDisplayMode(e.target.value as DisplayMode)}
-            style={{ marginRight: '5px' }}
-          />
-          Places disponibles
-        </label>
+        <select 
+          value={displayMode} 
+          onChange={(e) => setDisplayMode(e.target.value as DisplayMode)}
+          style={{ 
+            padding: '5px', 
+            borderRadius: '3px', 
+            border: '1px solid #ccc',
+            fontSize: '14px',
+            backgroundColor: 'white'
+          }}
+        >
+          <option value="bikes">Vélos disponibles</option>
+          <option value="stands">Places disponibles</option>
+          <option value="electricalBikes">Vélos électriques</option>
+        </select>
       </div>
  
     <MapContainer center={lyonPosition} zoom={13} style={{ height: '100%', width: '100%' }}>
@@ -61,7 +54,9 @@ const MapView: React.FC = () => {
           .map((station: Station) => {
             const count = displayMode === 'bikes' 
               ? station.mainStands.availabilities.bikes 
-              : station.mainStands.availabilities.stands;
+              : displayMode === 'stands'
+              ? station.mainStands.availabilities.stands
+              : station.mainStands.availabilities.electricalInternalBatteryBikes;
             
             const icon = L.divIcon({
               className: 'custom-marker',
@@ -85,7 +80,9 @@ const MapView: React.FC = () => {
 
             const title = displayMode === 'bikes' 
               ? `${station.name} - ${count} vélos disponibles`
-              : `${station.name} - ${count} places disponibles`;
+              : displayMode === 'stands'
+              ? `${station.name} - ${count} places disponibles`
+              : `${station.name} - ${count} vélos électriques disponibles`;
 
             return (
               <Marker 

@@ -2712,3 +2712,243 @@ Si vous voulez utiliser une vraie clé API, vous devrez soit :
 
 ---
 
+_**User**_
+
+
+
+changer l'option
+Vélos disponibles
+Places disponibles 
+en liste deroulante
+
+
+ajouter a StationMarker
+velo electrique
+station.mainStands.availabilities.electricalInternalBatteryBikes
+
+ajouter 
+velo electrique
+a la liste
+Vélos disponibles
+Places disponibles 
+
+si selection de velo electrique afficher le nombre de velo electrique
+
+---
+
+_**Assistant**_
+
+
+
+
+---
+
+<details><summary>Edit file: src/MapView.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -6,5 +6,5 @@
+  import L from 'leaflet';
+  
+- type DisplayMode = 'bikes' | 'stands';
++ type DisplayMode = 'bikes' | 'stands' | 'electricalBikes';
+  
+  const lyonPosition: [number, number] = [45.75, 4.85]; // Latitude, Longitude de Lyon
+```
+
+</details>
+
+---
+
+<details><summary>Edit file: src/MapView.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 13, lines removed: 21
+
+```diff
+@@ -27,26 +27,18 @@
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)' 
+        }}>
+-         <label style={{ marginRight: '10px' }}>
+-           <input
+-             type="radio"
+-             name="displayMode"
+-             value="bikes"
+-             checked={displayMode === 'bikes'}
++         <select 
++           value={displayMode} 
+            onChange={(e) => setDisplayMode(e.target.value as DisplayMode)}
+-             style={{ marginRight: '5px' }}
+-           />
+-           Vélos disponibles
+-         </label>
+-         <label>
+-           <input
+-             type="radio"
+-             name="displayMode"
+-             value="stands"
+-             checked={displayMode === 'stands'}
+-             onChange={(e) => setDisplayMode(e.target.value as DisplayMode)}
+-             style={{ marginRight: '5px' }}
+-           />
+-           Places disponibles
+-         </label>
++           style={{ 
++             padding: '5px', 
++             borderRadius: '3px', 
++             border: '1px solid #ccc',
++             fontSize: '14px'
++           }}
++         >
++           <option value="bikes">Vélos disponibles</option>
++           <option value="stands">Places disponibles</option>
++           <option value="electricalBikes">Vélos électriques</option>
++         </select>
+        </div>
+   
+```
+
+</details>
+
+---
+
+<details><summary>Edit file: src/MapView.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 3, lines removed: 1
+
+```diff
+@@ -54,5 +54,7 @@
+              const count = displayMode === 'bikes' 
+                ? station.mainStands.availabilities.bikes 
+-               : station.mainStands.availabilities.stands;
++               : displayMode === 'stands'
++               ? station.mainStands.availabilities.stands
++               : station.mainStands.availabilities.electricalInternalBatteryBikes;
+              
+              const icon = L.divIcon({
+```
+
+**Chunk 2**
+Lines added: 3, lines removed: 1
+
+```diff
+@@ -78,5 +80,7 @@
+              const title = displayMode === 'bikes' 
+                ? `${station.name} - ${count} vélos disponibles`
+-               : `${station.name} - ${count} places disponibles`;
++               : displayMode === 'stands'
++               ? `${station.name} - ${count} places disponibles`
++               : `${station.name} - ${count} vélos électriques disponibles`;
+  
+              return (
+```
+
+</details>
+
+---
+
+<details><summary>Edit file: src/useStations.ts</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -10,4 +10,5 @@
+        bikes: number;
+        stands: number;
++       electricalInternalBatteryBikes: number;
+      };
+    };
+```
+
+</details>
+
+---
+
+<details><summary>Edit file: src/StationMarker.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: undefined
+
+```diff
+@@ -12,4 +12,5 @@
+        <p><strong>Adresse :</strong> {station.address}</p>
+        <p><strong>Vélos disponibles :</strong> {station.mainStands.availabilities.bikes}</p>
++       <p><strong>Vélos électriques :</strong> {station.mainStands.availabilities.electricalInternalBatteryBikes}</p>
+        <p><strong>Bornes libres :</strong> {station.mainStands.availabilities.stands}</p>
+        <p><strong>Statut :</strong> {station.status === 'OPEN' ? 'Ouverte' : 'Fermée'}</p>
+```
+
+</details>
+
+---
+
+Parfait ! J'ai effectué toutes les modifications demandées :
+
+1. **Liste déroulante** : Remplacé les boutons radio par un `<select>` avec les 3 options
+2. **Ajout de "Vélos électriques"** : Nouvelle option dans la liste déroulante
+3. **Interface mise à jour** : Ajout de `electricalInternalBatteryBikes` dans l'interface `Station`
+4. **Logique d'affichage** : Les marqueurs affichent maintenant le nombre de vélos électriques quand cette option est sélectionnée
+5. **StationMarker mis à jour** : Affichage du nombre de vélos électriques dans la popup
+
+Maintenant vous pouvez :
+- Sélectionner "Vélos disponibles" pour voir le nombre de vélos classiques
+- Sélectionner "Places disponibles" pour voir le nombre de places libres  
+- Sélectionner "Vélos électriques" pour voir le nombre de vélos électriques
+
+Les marqueurs et tooltips s'adaptent automatiquement à votre sélection !
+
+---
+
+_**User**_
+
+modifier la liste deroulante doit être blanche
+
+---
+
+_**Assistant**_
+
+
+
+
+---
+
+<details><summary>Edit file: src/MapView.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 2, lines removed: 1
+
+```diff
+@@ -34,5 +34,6 @@
+              borderRadius: '3px', 
+              border: '1px solid #ccc',
+-             fontSize: '14px'
++             fontSize: '14px',
++             backgroundColor: 'white'
+            }}
+          >
+```
+
+</details>
+
+---
+
+Parfait ! J'ai ajouté `backgroundColor: 'white'` au style de la liste déroulante. Maintenant elle aura un fond blanc bien visible.
+
+---
+
