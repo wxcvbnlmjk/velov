@@ -2678,3 +2678,37 @@ Le sélecteur est maintenant centré en haut de la carte !
 
 ---
 
+_**User**_
+
+enlever .env
+
+---
+
+_**Assistant**_
+
+
+
+
+---
+
+```bash
+del .env
+```
+
+```
+PS C:\JS\velov> del .env
+PS C:\JS\velov>
+```
+
+---
+
+Le fichier `.env` a été supprimé. 
+
+Maintenant l'application utilisera la valeur par défaut `'VOTRE_API_KEY_ICI'` définie dans le code de `useStations.ts`. 
+
+Si vous voulez utiliser une vraie clé API, vous devrez soit :
+1. Remettre directement la clé dans le code
+2. Ou recréer le fichier `.env` avec votre clé API
+
+---
+
