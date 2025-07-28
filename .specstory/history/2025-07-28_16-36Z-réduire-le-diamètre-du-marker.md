@@ -84,3 +84,47 @@ Les markers sont maintenant deux fois plus petits qu'avant, ce qui devrait rendr
 
 ---
 
+_**User**_
+
+ajouter a la carte une marge de 5px avec bord arrondi
+
+---
+
+_**Assistant**_
+
+Je vais ajouter une marge de 5px avec des bords arrondis à la carte. Je vais modifier le conteneur de la carte dans le fichier `MapView.tsx`.
+
+
+---
+
+<details><summary>Edit file: src/MapView.tsx</summary>
+
+undefined
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -15,5 +15,5 @@
+  
+    return (
+-     <div style={{ height: '80vh', width: '100%' }}>
++     <div style={{ height: '80vh', width: '100%', margin: '5px', borderRadius: '8px', overflow: 'hidden' }}>
+        <div style={{ 
+          position: 'absolute', 
+```
+
+</details>
+
+---
+
+Parfait ! J'ai ajouté les modifications suivantes au conteneur de la carte :
+
+1. **Marge** : `margin: '5px'` - ajoute une marge de 5px sur tous les côtés
+2. **Bords arrondis** : `borderRadius: '8px'` - donne des coins arrondis à la carte
+3. **Overflow caché** : `overflow: 'hidden'` - s'assure que le contenu de la carte ne déborde pas des bords arrondis
+
+La carte aura maintenant une marge de 5px autour d'elle et des bords arrondis pour un aspect plus moderne et élégant.
+
+---
+

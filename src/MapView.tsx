@@ -14,7 +14,7 @@ const MapView: React.FC = () => {
   const [displayMode, setDisplayMode] = useState<DisplayMode>('bikes');
 
   return (
-    <div style={{ height: '80vh', width: '100%' }}>
+    <div style={{ height: '90vh', width: '98%', margin: '5px', borderRadius: '8px', overflow: 'hidden' }}>
       <div style={{ 
         position: 'absolute', 
         top: '10px', 
