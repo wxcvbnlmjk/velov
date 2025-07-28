@@ -64,18 +64,18 @@ const MapView: React.FC = () => {
                 background-color: ${count > 0 ? '#4CAF50' : '#f44336'};
                 color: white;
                 border-radius: 50%;
-                width: 30px;
-                height: 30px;
+                width: 15px;
+                height: 15px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-weight: bold;
-                font-size: 12px;
-                border: 2px solid white;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                font-size: 8px;
+                border: 1px solid white;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.3);
               ">${count}</div>`,
-              iconSize: [30, 30],
-              iconAnchor: [15, 15]
+              iconSize: [15, 15],
+              iconAnchor: [7.5, 7.5]
             });
 
             const title = displayMode === 'bikes' 
