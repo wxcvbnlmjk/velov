@@ -15,6 +15,7 @@ const MapView: React.FC = () => {
   const initialStationsRef = useRef<Station[]>([]);
   const [activityData, setActivityData] = useState<{[key: string]: number}>({});
   const [hasInitialData, setHasInitialData] = useState(false);
+  const [refreshCountdown, setRefreshCountdown] = useState(30);
 
   // Sauvegarder la première réponse et comparer avec les nouvelles données
   useEffect(() => {
@@ -24,7 +25,7 @@ const MapView: React.FC = () => {
         initialStationsRef.current = [...stations];
         setHasInitialData(true);
       } else {
-        // Comparer avec les données initiales sauvegardées
+        // Comparer avec les données initiales sauvegardées (toujours effectué)
         const activity: {[key: string]: number} = {};
         
         stations.forEach(station => {
@@ -40,6 +41,20 @@ const MapView: React.FC = () => {
       }
     }
   }, [stations, hasInitialData]);
+
+  // Gestion du décompte de rafraîchissement
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshCountdown(prev => {
+        if (prev <= 1) {
+          return 30; // Reset à 30 secondes
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Fonction pour calculer la couleur en fonction de l'activité
   const getActivityColor = (activity: number): string => {
@@ -131,12 +146,14 @@ const MapView: React.FC = () => {
             let textColor: string = 'white';
             
             if (displayMode === 'activity') {
+              // Afficher les données d'activité sauvegardées
               const activity = activityData[station.number] || 0;
               count = activity;
               backgroundColor = getActivityColor(activity);
               // Utiliser du noir pour le texte sur fond blanc, blanc pour les autres
               textColor = activity === 0 ? 'black' : 'white';
             } else {
+              // Affichage normal selon l'option choisie (vert/rouge)
               count = displayMode === 'bikes' 
                 ? station.mainStands.availabilities.bikes 
                 : displayMode === 'stands'
@@ -189,25 +206,44 @@ const MapView: React.FC = () => {
       </MapContainer>
       {loading && <p>Chargement des stations...</p>}
       {error && <p style={{color: 'red'}}>Erreur : {error}</p>}
+      
+      {/* Décompte de rafraîchissement */}
       <div style={{
         position: 'absolute',
-        bottom: '0px',
-        left: '50%',
-        transform: 'translateX(-115%)',
-        fontSize: '10px',
-        color: '#666',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        padding: '2px 6px',
-        borderRadius: '3px',
+        bottom: '2px',
+        left: '10px',
+        background: 'rgba(0, 0, 0, 0.7)',
+        color: 'white',
+        padding: '5px 8px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        fontFamily: 'monospace',
+        zIndex: 1000
+      }}>
+        {refreshCountdown}s
+      </div>
+
+      {/* Badge GitHub */}
+      <div style={{
+        position: 'absolute',
+        bottom: '-2px',
+        left: '50px',
         zIndex: 1000
       }}>
         <a 
           href="https://github.com/wxcvbnlmjk/velov" 
           target="_blank" 
           rel="noopener noreferrer"
-          style={{ color: '#666', textDecoration: 'none' }}
+          style={{ textDecoration: 'none' }}
         >
-          https://github.com/wxcvbnlmjk/velov
+          <img 
+            src="https://img.shields.io/github/last-commit/wxcvbnlmjk/velov" 
+            alt="Last commit"
+            style={{
+              height: '20px',
+              width: 'auto'
+            }}
+          />
         </a>
       </div>
     </div>
