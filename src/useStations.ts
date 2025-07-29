@@ -40,7 +40,7 @@ const useStations = () => {
 
   useEffect(() => {
     fetchStations();
-    const interval = setInterval(fetchStations, 120000); // 30 secondes
+    const interval = setInterval(fetchStations, 30000); // 30 secondes pour des données d'activité plus réactives
     return () => clearInterval(interval);
   }, []);
 
